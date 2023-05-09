@@ -30,7 +30,7 @@ seq_path = r"C:\Users\Optics Lab 2\Documents\Cheer\NanoPZ v0\Dump" # Path to sav
 if not os.path.exists(seq_path): os.mkdir(seq_path)
 seq_name = "img"            # Name of the files. Update accordingly.
 seq_nb = 1000                # Number of frames to save. Update accordingly.
-timewait = 0.1             # Tine to wait for the configuration to be applied
+timewait = 0.2             # Tine to wait for the configuration to be applied
 
 # Defining the parameters
 modeStr = 'Continuous'      # {0: 'Continuous', 1: 'SingleFrame', 2: 'MultiFrame'}
@@ -68,8 +68,7 @@ else:
 cam.camera_nodes.AcquisitionMode.set_node_value_from_str(modeStr, verify=True)
 cam.camera_nodes.ExposureAuto.set_node_value_from_str('Off', verify=True)
 cam.camera_nodes.ExposureMode.set_node_value_from_str('Timed', verify=True)
-cam.camera_nodes.ExposureTime.set_node_value_from_str("{}".format(ExposureTime+30000), verify=True)
-cam.camera_nodes.AcquisitionFrameRate.set_node_value_from_str('6', verify=True)
+cam.camera_nodes.ExposureTime.set_node_value_from_str("{}".format(ExposureTime+20000), verify=True)
 
 cam.camera_nodes.GainAuto.set_node_value_from_str("Off", verify=True)
 cam.camera_nodes.Gain.set_node_value(gainvalue, verify=True)
@@ -81,7 +80,8 @@ cam.camera_nodes.Height.set_node_value(max_height, verify=True)
 cam.begin_acquisition()
 for seq in range(1, seq_nb+1, 1):
     successful = False
-    while not successful:        
+    while not successful:
+        start_time = time.time()
         try:
             # Acquiring the image
             frame = cam.get_next_image(timeout=5)
@@ -89,21 +89,26 @@ for seq in range(1, seq_nb+1, 1):
             time.sleep(timewait)            
             # Saving the image frame.save_png('{}\img{}.png'.format(seq_path, i))
             a = frame.get_image_data()
+            '''
             img_lst = []
             for i in range(0, len(a), 2):
                 val = a[i] << 8 | a[i+1]
                 img_lst.append(val)            
-            #data = np.frombuffer(a, dtype=np.uint16).reshape(max_height, max_width).
             data = np.array(img_lst).reshape(max_height, max_width)
+            '''
+            data = np.frombuffer(a, dtype=np.uint16).reshape(max_height, max_width)
+            data = np.array(data, dtype=np.uint16).byteswap()
             # create a FITS HDU (Header-Data Unit) with the data and header
             hdu = fits.PrimaryHDU(data, header)
             hdu.writeto('{}\img{}.fits'.format(seq_path, seq), overwrite=True)
 
             frame.release()
             print("Saving frame ", seq, " / ", seq_nb)
-            successful = True            
+            successful = True
+            print('----- {} s -----'.format(time.time()-start_time))           
         except ValueError as e:
-            frame.release() #print("Image lost")
+            frame.release() #
+            print("Image lost")
 release_cam()
 
 
