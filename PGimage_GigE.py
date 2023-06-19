@@ -26,7 +26,7 @@ else:
 seq_path    = r"C:\Users\Optics Lab 2\Documents\Cheer\NanoPZ v0\Dump"      # Path to save the file
 if not os.path.exists(seq_path): os.mkdir(seq_path)
 seq_name    = "img"                # Name of the files. Update accordingly.
-seq_nb      = 1000                   # Number of frames to save. Update accordingly.
+seq_nb      = 10000                   # Number of frames to save. Update accordingly.
 timewait    = 0.2                  # Tine to wait for the configuration to be applied
 
 # Defining the parameters
@@ -69,7 +69,7 @@ atexit.register(release_cam)
 cam.camera_nodes.AcquisitionMode.set_node_value_from_str(modeStr,   verify=True)
 cam.camera_nodes.ExposureAuto.set_node_value_from_str('Off',        verify=True)
 cam.camera_nodes.ExposureMode.set_node_value_from_str('Timed',      verify=True)
-cam.camera_nodes.ExposureTime.set_node_value_from_str("{}".format(ExposureTime+20000), verify=True)
+cam.camera_nodes.ExposureTime.set_node_value_from_str("{}".format(1000), verify=True)
 
 cam.camera_nodes.GainAuto.set_node_value_from_str("Off", verify=True)
 cam.camera_nodes.Gain.set_node_value(gainvalue,     verify=True)
@@ -109,7 +109,7 @@ for seq in range(1, seq_nb+1, 1):
             print("Saving frame ", seq, " / ", seq_nb)
             successful = True
             print('----- {} s -----'.format(time.time()-start_time))           
-        except ValueError as e:
+        except Exception as e:
             frame.release() #
             print("Image lost")
 release_cam()
