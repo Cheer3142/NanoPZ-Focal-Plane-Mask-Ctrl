@@ -33,7 +33,7 @@ def running_task(loops, ):
         if len(files)>1:
             #select most recently created file
             files.sort(key=lambda x: os.path.getctime(x))
-            mask_image = fits.open(path / files[-loops%len(files)])[0].data
+            mask_image = fits.open(path / files[-1])[0].data
             
             
             if method:
@@ -45,6 +45,7 @@ def running_task(loops, ):
                 box_size = 120
                 #crop image
                 mask_psf = mask_image[y0-box_size:y0+box_size,x0-box_size:x0+box_size]
+                print(y0,x0)
             else:
                 threshold = 20000
                 mask_c = (mask_image > threshold).astype(np.uint8)*255
