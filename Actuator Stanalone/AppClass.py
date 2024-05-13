@@ -212,7 +212,8 @@ class NanoPZ(tk.Tk):
     
     def limit_function(self):
         try:
-            if int(self.pos_entry.get())>int(self.neg_entry.get()) and int(self.pos_entry.get()) < 10000001 and int(self.pos_entry.get()) > -1 and int(self.neg_entry.get()) < 1 and int(self.neg_entry.get()) > -10000001:
+            if  int(self.pos_entry.get())>int(self.neg_entry.get()) and int(self.pos_entry.get()) < 10000001 \
+                and int(self.pos_entry.get()) > -1 and int(self.neg_entry.get()) < 1 and int(self.neg_entry.get()) > -10000001:
                 self.set_limit()
                 self.posinsys = self.pos_entry.get()
                 self.neginsys = self.neg_entry.get()
