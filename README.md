@@ -33,8 +33,8 @@ The Focal Plane Mask Control Procedure is a mini project developed by the EvWaCo
 - Development environment (IDE)
 - Necessary libraries and dependencies
 
+## Clone the repository
 ```bash
-# Clone the repository
 git clone https://github.com/Cheer3142/NanoPZ-Focal-Plane-Mask-Ctrl
 ```
 
