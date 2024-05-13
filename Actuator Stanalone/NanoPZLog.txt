@@ -1,0 +1,8 @@
+{
+    "time_save": "2023-04-20 11:23:59",
+    "pos_entry": "10000000",
+    "neg_entry": "-10000000",
+    "move_entry": "20",
+    "step_entry": "0",
+    "offset": -30
+}
