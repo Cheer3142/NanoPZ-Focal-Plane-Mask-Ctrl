@@ -6,14 +6,12 @@ import datetime
 import json
 import PortModule
 import serial
-#from PIL import Image, ImageTk
 import os
 
 class NanoPZ(tk.Tk):
     def __init__(self, *args, **kwargs):
         tk.Tk.__init__(self, *args, **kwargs)
         self.title("NanoPZ Motion Control")
-        #self.geometry("410x350")ด
         self.minsize(420, 380) 
         self.maxsize(420, 450)
         self.configure(bg='#222831')
@@ -62,15 +60,11 @@ class NanoPZ(tk.Tk):
                             
         self.port_search()
 
-        
-    # Define a function to write commands to the actuator
     def write(self, com):
         time.sleep(0.1)
         Actuator.write("{}{}\n\r".format(self.cid_combobox.get(), com).encode())
         print("{}{}\n\r".format(self.cid_combobox.get(), com).encode())
         
-    
-    # Define a function to write/read commands to the actuator    
     def query(self, com, option=0):
         time.sleep(0.1)
         if option:
@@ -276,8 +270,6 @@ class NanoPZ(tk.Tk):
             self.c_value.set(self.query("TP?"))
             print("------ Motor On ------")
         else:
-            #if self.auto_tune_buton['text'] == "Auto Tune":
-            #    self.auto_tune()
             self.write("MF")
             self.motor_buton['text'] = ("Motor Off")
             self.motor_buton.config(bg="#F9CB40")
@@ -301,11 +293,10 @@ class NanoPZ(tk.Tk):
         print("Selected option:", selected_option)  
         
     def port_search(self):
-        # Call "PortModule"
         a = PortModule.serial_ports()
         self.connection_menu.delete(0, "end")
         if "Actuator" in globals(): a.append(Actuator.port)
-        # self.connection_menu.add_command(label='Test', command=lambda label='Test': self.select_port(label))
+        
         for i in a:
             self.connection_menu.add_command(label=i, command=lambda label=i: self.select_port(label))
 
@@ -323,7 +314,6 @@ class NanoPZ(tk.Tk):
 
         for i in range(20):
             return_word =  self.query("ID?", str(i))
-            # return_word = 1
             if return_word:
                 new_cid_options.append(i)
                 self.name_dict[str(i)] = return_word
@@ -333,7 +323,6 @@ class NanoPZ(tk.Tk):
             self.name_dict["N/A"] = "None"
         messagebox.showinfo("COM PORT", label)
         
-        # reset the progress bar
         self.progress['value'] = 0
         self.progress.pack_forget()       
         self.cid_combobox['values'] = new_cid_options
@@ -343,8 +332,6 @@ class NanoPZ(tk.Tk):
         self.write("MF")
         self.motor_buton['text'] = ("Motor Off")
         self.motor_buton.config(bg="#DF3B57")
-        #self.auto_tune_buton['text'] = ("Auto Tune ")
-        #self.auto_tune_buton.config(bg="#DF3B57")
         cp = self.query("TP?")-self.offset
         self.offset = self.offset-cp
         self.c_value.set(cp+self.offset)
@@ -434,54 +421,3 @@ if __name__ == "__main__":
     print(">> App Start")
     app = NanoPZ()
     app.mainloop()
-    # print(app.offset)
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-'''
-    def create_step_button(self):
-        num = 0
-        for i in ['➕', '➖']:
-            step_buton = tk.Button(self.motion_frame, text= i, command = lambda arg=i: self.step_function(arg), width = 3, font=('Arial', 8), bg='#FBD1A2')
-            step_buton.grid(row=0, column=4+num, padx=3, pady=5)
-            num +=1
-'''
-
