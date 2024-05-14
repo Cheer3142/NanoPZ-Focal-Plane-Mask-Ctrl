@@ -5,7 +5,6 @@ import time
 import datetime
 import json
 import PortModule
-import serial
 import os
 
 class NanoPZ(tk.Tk):
