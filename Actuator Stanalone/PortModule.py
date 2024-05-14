@@ -26,7 +26,6 @@ QByteArray READ_CONTORLLER_FIRMWARE : "VE",
 '''
 
 def serial_ports():
-    # window/linux/darwin
     if sys.platform.startswith('win'):
         ports = ['COM%s' % (i + 1) for i in range(256)]
     elif sys.platform.startswith('linux') or sys.platform.startswith('cygwin'):
@@ -59,18 +58,7 @@ def ConnectPort(label):
     return Actuator
 
 if __name__ == '__main__':
-    '''
-    import serial.tools.list_ports
-    ports = serial.tools.list_ports.comports()
-
-    for port, desc, hwid in sorted(ports):
-        print("{}: {} [{}]".format(port, desc, hwid))
-    '''
     print(serial_ports(),1)
-    #Actuator=ConnectPort("COM1")
-    #Actuator.close()
-    #print(Actuator)
-
 
 
 
